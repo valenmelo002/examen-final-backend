@@ -1,7 +1,8 @@
 import { DateTime } from 'luxon'
-import { BaseModel, column, belongsTo } from '@adonisjs/lucid/orm'
-import type { BelongsTo } from '@adonisjs/lucid/types/relations'
-import Especialidad from './especialidad.js'
+import { BaseModel, column, belongsTo, hasMany } from '@adonisjs/lucid/orm'
+import type { BelongsTo, HasMany } from '@adonisjs/lucid/types/relations'
+import Especialidad from './especialidad.ts'
+import DoctorHorario from './doctor_horario.ts'
 
 export default class Doctor extends BaseModel {
   public static table = 'doctores'
@@ -31,6 +32,11 @@ export default class Doctor extends BaseModel {
     foreignKey: 'especialidad_id',
   })
   declare especialidad: BelongsTo<typeof Especialidad>
+
+  @hasMany(() => DoctorHorario, {
+    foreignKey: 'doctor_id',
+  })
+  declare horarios: HasMany<typeof DoctorHorario>
 
   @column.dateTime({ autoCreate: true })
   declare created_at: DateTime
